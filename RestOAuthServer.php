@@ -4,8 +4,8 @@
  */
 
 require_once 'RestServer/RestServer.php';
-require_once __DIR__."/../../oauth2-draft20/lib/OAuth2.php";
-require_once __DIR__."/../../oauth2-draft20/server/examples/pdo/lib/OAuth2StoragePDO.php";
+require_once 'oauth2-php/lib/OAuth2.php';
+require_once 'oauth2-php/server/examples/pdo/lib/OAuth2StoragePdo.php';
 /**
  * RestOAuthServer extends RestServer with OAuth2 support
  *
