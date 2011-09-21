@@ -1,0 +1,6 @@
+[submodule "restserver"]
+	path = restserver
+	url = git@v2.hh.lan:rest-o-auth/restserver.git
+[submodule "oauth2-php"]
+	path = oauth2-php
+	url = git@v2.hh.lan:rest-o-auth/oauth2-php.git
