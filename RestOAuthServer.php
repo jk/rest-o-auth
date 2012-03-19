@@ -62,7 +62,7 @@ class RestOAuthServer extends RestServer {
 	 * 	OAuth2 shared instance
 	 */
 	protected function oauth() {
-		if (!$this->_oauth) {
+		if (!isset($this->_oauth)) {
 			$this->_oauth = new OAuth2($this->storage);
 		}
 		return $this->_oauth;
