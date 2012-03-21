@@ -5,7 +5,7 @@
 
 require_once 'RestServer/RestServer.php';
 require_once 'oauth2-php/lib/OAuth2.php';
-require_once 'oauth2-php/server/examples/pdo/lib/OAuth2StoragePdo.php';
+
 /**
  * RestOAuthServer extends RestServer with OAuth2 support
  *
