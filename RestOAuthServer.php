@@ -3,7 +3,7 @@
  * @todo Implement an auto_load function for including the dependencies.
  */
 
-require_once 'RestServer/RestServer.php';
+require_once 'restserver/RestServer.php';
 require_once 'oauth2-php/lib/OAuth2.php';
 
 /**
