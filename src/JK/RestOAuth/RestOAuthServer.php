@@ -1,11 +1,12 @@
 <?php
-/**
- * @todo Implement an auto_load function for including the dependencies.
- */
 
-require_once 'RestServer/RestServer.php';
-require_once __DIR__."/../../oauth2-draft20/lib/OAuth2.php";
-require_once __DIR__."/../../oauth2-draft20/server/examples/pdo/lib/OAuth2StoragePDO.php";
+namespace JK\RestOAuth;
+
+use JK\OAuth2\IOAuth2Storage;
+use JK\OAuth2\OAuth2;
+use JK\OAuth2\OAuth2ServerException;
+use JK\RestServer\RestServer;
+
 /**
  * RestOAuthServer extends RestServer with OAuth2 support
  *
@@ -62,7 +63,7 @@ class RestOAuthServer extends RestServer {
 	 * 	OAuth2 shared instance
 	 */
 	protected function oauth() {
-		if (!$this->_oauth) {
+		if (!isset($this->_oauth)) {
 			$this->_oauth = new OAuth2($this->storage);
 		}
 		return $this->_oauth;
@@ -119,4 +120,3 @@ class RestOAuthServer extends RestServer {
 		}
 	}
 }
-?>
