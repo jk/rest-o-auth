@@ -1,10 +1,11 @@
 <?php
-/**
- * @todo Implement an auto_load function for including the dependencies.
- */
 
-require_once 'restserver/RestServer.php';
-require_once 'oauth2-php/lib/OAuth2.php';
+namespace JK\RestOAuth;
+
+use JK\OAuth2\IOAuth2Storage;
+use JK\OAuth2\OAuth2;
+use JK\OAuth2\OAuth2ServerException;
+use JK\RestServer\RestServer;
 
 /**
  * RestOAuthServer extends RestServer with OAuth2 support
@@ -119,4 +120,3 @@ class RestOAuthServer extends RestServer {
 		}
 	}
 }
-?>
