@@ -18,7 +18,7 @@
   },
   "autoload": {
     "psr-0": {
-      "JK\\Rest-O-Auth\\": "src/"
+      "JK\\RestOAuth\\": "src/"
     }
   },
   "homepage": "https://github.com/jk/rest-o-auth",
