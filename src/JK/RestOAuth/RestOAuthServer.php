@@ -3,7 +3,6 @@
 namespace JK\RestOAuth;
 
 use JK\RestServer\RestServer;
-use OAuth2\Storage;
 
 /**
  * RestOAuthServer extends RestServer with OAuth2 support
@@ -44,7 +43,7 @@ class RestOAuthServer extends RestServer
     protected $storage;
 
     /**
-     * The REST-O-Auth server requires a IOAuth2Storage compatable storage instance. The other
+     * The REST-O-Auth server requires a IOAuth2Storage compatible storage instance. The other
      * parameters are optional. While developing your REST web service, it's a good idea to
      * set mode to 'debug'.
      *
@@ -65,14 +64,12 @@ class RestOAuthServer extends RestServer
      * the @noAuth keyword. So this is the right place to implement other
      * authentication mechanisms like OAuth2, what we're doing here.
      *
-     * Don't call that method directly, it hasn't any benefits in doing
+     * Don't call that method directly, it has not any benefits in doing
      * so. It will be automatically called by the super class, if it's there.
      *
      * @access protected
-     * @param string $ask
-     *    It's just here for compatibility
-     * @return bool
-     *    True if verified request, False otherwise
+     * @param bool $ask It's just here for compatibility
+     * @return bool True if verified request, False otherwise
      */
     protected function doServerWideAuthorization($ask = false)
     {
@@ -82,7 +79,8 @@ class RestOAuthServer extends RestServer
 
         // Handle a request to a resource and authenticate the access token
         if (!$this->oauth2_server->verifyResourceRequest(\OAuth2\Request::createFromGlobals())) {
-            // Presented token wasn't vaild
+            // Presented token wasn't valid
+            /** @noinspection PhpUndefinedMethodInspection */
             $this->oauth2_server->getResponse()->send();
 
             return false;
@@ -90,11 +88,11 @@ class RestOAuthServer extends RestServer
             // Token is valid
 
             /** @var array $token_data */
-            $token_data = $this->oauth2_server->getAccessTokenData(OAuth2\Request::createFromGlobals());
+            $token_data = $this->oauth2_server->getAccessTokenData(\OAuth2\Request::createFromGlobals());
             list($obj, $method, $params, $thisParams, $keys) = $this->findUrl();
             $accepted_scope = $keys['scope'];
 
-            // Save all info in the _SERVER enviroment
+            // Save all info in the _SERVER environment
             $_SERVER['OAUTH2_USER_ID'] = $token_data['user_id'];
             $_SERVER['OAUTH2_CLIENT_ID'] = $token_data['client_id'];
             $_SERVER['OAUTH2_EXPIRES'] = $token_data['expires'];
@@ -103,7 +101,7 @@ class RestOAuthServer extends RestServer
             $_SERVER['OAUTH2_ACCESS_TOKEN'] = $token_data['access_token'];
 
             if ($this->optionalHeaders) {
-                // This is completly optional, but Github does so,
+                // This is completely optional, but GitHub does so,
                 // too: http://developer.github.com/v3/oauth/
                 $this->header_manager->addHeader('X-OAuth-Scopes', $token_data['scope']);
                 $this->header_manager->addHeader('X-Accepted-OAuth-Scopes: ', $accepted_scope);
