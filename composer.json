@@ -32,5 +32,10 @@
   "support": {
     "issues": "https://github.com/jk/rest-o-auth/issues",
     "wiki": "https://github.com/jk/rest-o-auth/wiki"
+  },
+  "archive": {
+    "exclude": [
+      "/example"
+    ]
   }
 }
