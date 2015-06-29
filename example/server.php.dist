@@ -1,0 +1,11 @@
+<?php
+require_once(realpath(__DIR__ . '/../vendor/autoload.php'));
+
+$dsn = 'mysql:dbname=myDatabase;host=mySql.example.com';
+$username = 'username';
+$password = 'password';
+
+$storage = new OAuth2\Storage\Pdo(new PDO($dsn, $username, $password));
+
+$rest_o_auth_server = new \JK\RestOAuth\RestOAuthServer($storage, 'debug');
+
