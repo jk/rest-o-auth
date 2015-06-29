@@ -35,7 +35,7 @@ class RestOAuthServer extends RestServer
     /**
      * @var \OAuth2\Server bshaffer/oauth2-server-php server instance
      */
-    public $oauth2_server;
+    protected $oauth2_server;
 
     /**
      * @var mixed Storage variable to hold an IOAuth2Storage compliant object
@@ -77,20 +77,22 @@ class RestOAuthServer extends RestServer
             return true;
         }
 
+        list($obj, $method, $params, $thisParams, $keys) = $this->findUrl();
+        $accepted_scope = (isset($keys['scope'])) ? $keys['scope'] : null;
+
         // Handle a request to a resource and authenticate the access token
-        if (!$this->oauth2_server->verifyResourceRequest(\OAuth2\Request::createFromGlobals())) {
+        $request = \OAuth2\Request::createFromGlobals();
+        $response = new \OAuth2\Response();
+        if (!$this->getOAuth2Server()->verifyResourceRequest($request, $response, $accepted_scope)) {
             // Presented token wasn't valid
-            /** @noinspection PhpUndefinedMethodInspection */
-            $this->oauth2_server->getResponse()->send();
+            $response->send();
 
             return false;
         } else {
             // Token is valid
 
             /** @var array $token_data */
-            $token_data = $this->oauth2_server->getAccessTokenData(\OAuth2\Request::createFromGlobals());
-            list($obj, $method, $params, $thisParams, $keys) = $this->findUrl();
-            $accepted_scope = $keys['scope'];
+            $token_data = $this->getOAuth2Server()->getAccessTokenData($request);
 
             // Save all info in the _SERVER environment
             $_SERVER['OAUTH2_USER_ID'] = $token_data['user_id'];
@@ -117,7 +119,7 @@ class RestOAuthServer extends RestServer
      * @return \OAuth2\Server
      *    OAuth2 shared instance
      */
-    protected function oauth()
+    public function getOAuth2Server()
     {
         if (!isset($this->_oauth)) {
             // If there is no \OAuth2\Server instance available create a default one
@@ -129,9 +131,25 @@ class RestOAuthServer extends RestServer
             $this->oauth2_server->addGrantType(new \OAuth2\GrantType\AuthorizationCode($this->storage));
             $this->oauth2_server->addGrantType(new \OAuth2\GrantType\RefreshToken($this->storage));
 
-            $this->oauth2_server->setConfig('access_lifetime', 3600);
+            $this->oauth2_server->setConfig('access_lifetime', 2592000);
+
+            $defaultScope = 'basic';
+            $supportedScopes = [
+                'basic'
+            ];
+            $memory = new \OAuth2\Storage\Memory([
+                'default_scope' => $defaultScope,
+                'supported_scopes' => $supportedScopes
+            ]);
+            $scopeUtil = new \OAuth2\Scope($memory);
+            $this->oauth2_server->setScopeUtil($scopeUtil);
         }
 
-        return $this->_oauth;
+        return $this->oauth2_server;
+    }
+
+    public function setOAuth2Server(\OAuth2\Server $server)
+    {
+        $this->oauth2_server = $server;
     }
 }
