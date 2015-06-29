@@ -1,0 +1,18 @@
+php_flag display_errors 1
+php_flag log_errors 0
+#php_value error_reporting E_ALL
+php_flag eaccelerator.enable 0
+php_flag eaccelerator.optimizer 0
+
+<IfModule mod_rewrite.c>
+	# Turn Rewrite Engine on
+	RewriteEngine On
+    # OAuth2 endpoints
+	RewriteRule ^(authorize|token)$ $1.php [QSA,L]
+    # If the file really exists, show us the file
+	RewriteCond %{REQUEST_FILENAME} !-f
+	# If the directory really exists, show us the directory
+	RewriteCond %{REQUEST_FILENAME} !-d
+	# Send all requests to index.php (index.php will parse the request url and routes accordingly)
+	RewriteRule ^.*$ index.php [QSA,L]
+</IfModule>
